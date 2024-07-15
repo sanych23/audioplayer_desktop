@@ -9,9 +9,6 @@ class MyWidget(QtWidgets.QWidget):
 
         self.hello = ["Hallo Welt", "Hei maailma", "Hola Mundo", "Привет мир"]
 
-        
-        
-
         self.layout = QtWidgets.QVBoxLayout(self)
         
 
@@ -27,7 +24,6 @@ class MyWidget(QtWidgets.QWidget):
 
     def magic(self):
         self.text.setText(random.choice(self.hello))
-        
         
 
 
