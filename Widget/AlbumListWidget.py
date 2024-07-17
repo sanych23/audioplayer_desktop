@@ -1,5 +1,5 @@
 import sys
-from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton, QWidget, QScrollArea, QGridLayout, QHBoxLayout
+from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton, QWidget, QScrollArea, QGridLayout, QHBoxLayout, QLabel,QVBoxLayout
 from PySide6.QtCore import QFile, QSize,QRect
 from vendor.database import DataBaseConnector
 
@@ -12,14 +12,19 @@ class AlbumListWidget(QMainWindow):
        
         self.scrollArea = QScrollArea(self)
         self.scrollArea.setWidgetResizable(True)
+        self.label = QLabel("Список альбомов")
         
-        self.scrollAreaWidgetContents = QWidget()                  
+        self.scrollAreaWidgetContents = QWidget()
+        
+                        
         self.gridLayout = QGridLayout(self.scrollAreaWidgetContents)
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         self.gridLayout.setGeometry(QRect(0, 0, 500, 495))     
         
-        self.layout = QHBoxLayout(self.centralwidget)        
+        self.layout = QVBoxLayout(self.centralwidget)   
+        self.layout.addWidget(self.label)      
         self.layout.addWidget(self.scrollArea)
+        
         self.addAlbumButtons()
         
         
