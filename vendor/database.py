@@ -30,7 +30,11 @@ class DataBaseConnector:
         self.__cursor.execute (sql)
 
 
-class DbORM(DataBaseConnector):
+class Validator:
+    pass
+
+
+class DbORM(DataBaseConnector, Validator):
     def __init__(self) -> None:
         super().__init__()
 
@@ -45,3 +49,5 @@ class DbORM(DataBaseConnector):
         value_row = value_row[:-1] + ")"
         sql += name_row + " VALUES " + value_row
         self.query(sql)
+
+
