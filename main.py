@@ -15,7 +15,8 @@ class MainWindow(QtWidgets.QWidget, Events):
         self.main_layout = QtWidgets.QVBoxLayout(self)
         self.main_layout.addWidget(self.album_list)
         self.button_open_add_album()
-        self.widget_add_album()
+        self.widget_add_album() 
+
 
     def generateAlbumSong(self, album_id):
         data = self.__connect.querySelect(f"""SELECT 

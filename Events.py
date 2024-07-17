@@ -21,4 +21,7 @@ class Events:
             "description": description,
             "release_date": release_date,
         })
+        self.hide()
+        self.parent_window.album_list.addAlbumButtons()
+        self.parent_window.show()
 
