@@ -11,18 +11,18 @@ class MainWindow(QtWidgets.QWidget, Events):
         self.widget_add_album()
 
         self.main_layout = QtWidgets.QVBoxLayout(self)
-        self.main_layout.addWidget(self._album_group_box)
+        # self.main_layout.addWidget(self._album_group_box)
         self.button_open_add_album()
 
-    def create_album_list_box(self):
-        albums = self.__connect.querySelect('SELECT id, name FROM public.album ORDER BY id')
-        self._album_group_box = QGroupBox("Cписок альбомов")
-        flow_layout = FlowLayout(self) # layout для переноса кнопок)
-        for album in albums:
-            button = QPushButton(f"{album['name']}")
-            button.setFixedSize(QtCore.QSize(190, 80))
-            flow_layout.addWidget(button)
-        self._album_group_box.setLayout(flow_layout)
+    # def create_album_list_box(self):
+    #     albums = self.__connect.querySelect('SELECT id, name FROM public.album ORDER BY id')
+    #     self._album_group_box = QGroupBox("Cписок альбомов")
+    #     flow_layout = FlowLayout(self) # layout для переноса кнопок)
+    #     for album in albums:
+    #         button = QPushButton(f"{album['name']}")
+    #         button.setFixedSize(QtCore.QSize(190, 80))
+    #         flow_layout.addWidget(button)
+    #     self._album_group_box.setLayout(flow_layout)
 
     def generateAlbumSong(self, album_id):
         data = self.__connect.querySelect(f"""SELECT 
