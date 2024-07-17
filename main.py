@@ -1,6 +1,8 @@
 import sys
 from PySide6 import QtCore, QtWidgets
 from PySide6.QtWidgets import QPushButton, QLineEdit, QLabel, QTextEdit
+from vendor.database import DataBaseConnector
+from Widget.AlbumListWidget import AlbumListWidget
 from Events import Events
 
 
@@ -8,21 +10,12 @@ class MainWindow(QtWidgets.QWidget, Events):
     def __init__(self):
         super().__init__()
         
-        self.widget_add_album()
-
+        self.__connect = DataBaseConnector()
+        self.album_list = AlbumListWidget()
         self.main_layout = QtWidgets.QVBoxLayout(self)
-        # self.main_layout.addWidget(self._album_group_box)
+        self.main_layout.addWidget(self.album_list)
         self.button_open_add_album()
-
-    # def create_album_list_box(self):
-    #     albums = self.__connect.querySelect('SELECT id, name FROM public.album ORDER BY id')
-    #     self._album_group_box = QGroupBox("Cписок альбомов")
-    #     flow_layout = FlowLayout(self) # layout для переноса кнопок)
-    #     for album in albums:
-    #         button = QPushButton(f"{album['name']}")
-    #         button.setFixedSize(QtCore.QSize(190, 80))
-    #         flow_layout.addWidget(button)
-    #     self._album_group_box.setLayout(flow_layout)
+        self.widget_add_album()
 
     def generateAlbumSong(self, album_id):
         data = self.__connect.querySelect(f"""SELECT 
@@ -101,7 +94,7 @@ class AddAlbumWindow(QtWidgets.QWidget, Events):
 app = QtWidgets.QApplication([])
 
 widget = MainWindow()
-widget.resize(800, 600)
+widget.resize(1000, 600)
 widget.show()
 
 sys.exit(app.exec())
