@@ -43,6 +43,7 @@ class MainWindow(QtWidgets.QWidget, Events):
         self.add_album_wiget.hide()
         self.add_album_wiget.resize(400, 400)
 
+
     def button_open_add_album(self):
         button = QPushButton("Добавить альбом")
         self.main_layout.addWidget(button)
