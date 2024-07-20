@@ -37,7 +37,6 @@ class AlbumListWidget(QMainWindow, Events):
         column = 0
         albums = self.__connect.querySelect('SELECT id, name FROM public.album ORDER BY id')
         for album in albums:
-            # self.buttons = QPushButton(album['name'])
             self.buttons.append(
                 {
                     'id': album['id'],
@@ -54,18 +53,10 @@ class AlbumListWidget(QMainWindow, Events):
                 column = 0
                 row = row + 1
             self.buttons[-1]['btn'].clicked.connect(self.open_album)
-            # self.buttons[-1]['btn'].clicked.connect(self.get_song_list)
+
 
     def open_album(self):
         self.album_id = self.sender().album_id
         self.album_name = self.sender().album_name
         self.song_list = SongWidget(self,self.album_name, self.album_id)
         self.song_list.show()
-
-
-# app = QApplication(sys.argv)
-
-# window = AlbumListWidget()
-# window.resize(800, 600)
-# window.show()
-# sys.exit(app.exec())
