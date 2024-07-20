@@ -1,9 +1,11 @@
 import sys
 from PySide6 import QtCore, QtWidgets
+from PySide6.QtGui import (QAction,QFont,QIcon)
 from PySide6.QtWidgets import QPushButton, QLineEdit, QLabel, QTextEdit
 from vendor.database import DataBaseConnector
 from Widget.AlbumListWidget import AlbumListWidget
 from Events import Events
+import Lib.Interface.resources
 
 
 class MainWindow(QtWidgets.QWidget, Events):
@@ -15,7 +17,8 @@ class MainWindow(QtWidgets.QWidget, Events):
         self.main_layout = QtWidgets.QVBoxLayout(self)
         self.main_layout.addWidget(self.album_list)
         self.button_open_add_album()
-        self.widget_add_album() 
+        self.widget_add_album()
+
 
 
     def generateAlbumSong(self, album_id):
@@ -35,7 +38,7 @@ class MainWindow(QtWidgets.QWidget, Events):
                                             ON
                                                 song_album.song_id = song.id
                                             WHERE 
-                                                album_id = {album_id}""")
+                                                album_id ={album_id}""")
         return data  
 
     def widget_add_album(self):
@@ -48,6 +51,7 @@ class MainWindow(QtWidgets.QWidget, Events):
         button = QPushButton("Добавить альбом")
         self.main_layout.addWidget(button)
         button.clicked.connect(self.open_add_album)
+
 
 
 class AddAlbumWindow(QtWidgets.QWidget, Events):

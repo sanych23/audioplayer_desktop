@@ -1,9 +1,12 @@
 import sys
 from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton, QWidget, QScrollArea, QGridLayout, QHBoxLayout, QLabel,QVBoxLayout
-from PySide6.QtCore import QFile, QSize,QRect
+from PySide6.QtCore import QFile, QSize,QRect, Slot
 from vendor.database import DataBaseConnector
+from Events import Events
+from Widget.SongWidget import SongWidget
+from Widget.MusicWidget import MusicWidget
 
-class AlbumListWidget(QMainWindow):
+class AlbumListWidget(QMainWindow, Events):
     def __init__(self):
         super().__init__()
         self.centralwidget = QWidget()
@@ -15,8 +18,8 @@ class AlbumListWidget(QMainWindow):
         self.label = QLabel("Список альбомов")
         
         self.scrollAreaWidgetContents = QWidget()
-        
-                        
+        self.buttons = []
+                 
         self.gridLayout = QGridLayout(self.scrollAreaWidgetContents)
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         self.gridLayout.setGeometry(QRect(0, 0, 500, 495))     
@@ -33,14 +36,32 @@ class AlbumListWidget(QMainWindow):
         row = 0
         column = 0
         albums = self.__connect.querySelect('SELECT id, name FROM public.album ORDER BY id')
-        for item in albums:
-            button = QPushButton(item['name'])
-            button.setFixedSize(QSize(170, 80))
-            self.gridLayout.addWidget(button ,row,column)
+        for album in albums:
+            # self.buttons = QPushButton(album['name'])
+            self.buttons.append(
+                {
+                    'id': album['id'],
+                    'btn': QPushButton(album['name'])
+                }
+            )
+            
+            self.buttons[-1]['btn'].setFixedSize(QSize(170, 80))
+            self.gridLayout.addWidget(self.buttons[-1]['btn'] ,row,column)
+            self.buttons[-1]['btn'].album_id = album["id"]
+            self.buttons[-1]['btn'].album_name = album["name"]
             column = column + 1
             if (column == 4):
                 column = 0
-                row = row + 1 
+                row = row + 1
+            self.buttons[-1]['btn'].clicked.connect(self.open_album)
+            # self.buttons[-1]['btn'].clicked.connect(self.get_song_list)
+
+    def open_album(self):
+        self.album_id = self.sender().album_id
+        self.album_name = self.sender().album_name
+        self.song_list = SongWidget(self,self.album_name, self.album_id)
+        self.song_list.show()
+
 
 # app = QApplication(sys.argv)
 
