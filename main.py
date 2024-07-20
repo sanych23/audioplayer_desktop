@@ -5,7 +5,6 @@ from PySide6.QtWidgets import QPushButton, QLineEdit, QLabel, QTextEdit
 from vendor.database import DataBaseConnector
 from Widget.AlbumListWidget import AlbumListWidget
 from Events import Events
-import Lib.Interface.resources
 
 
 class MainWindow(QtWidgets.QWidget, Events):
@@ -19,8 +18,6 @@ class MainWindow(QtWidgets.QWidget, Events):
 
         self.button_open_add_album()
         self.widget_add_album()
-
-
 
     def generateAlbumSong(self, album_id):
         data = self.__connect.querySelect(f"""SELECT 
@@ -47,7 +44,6 @@ class MainWindow(QtWidgets.QWidget, Events):
         self.add_album_wiget.hide()
         self.add_album_wiget.resize(400, 400)
 
-
     def button_open_add_album(self):
         button = QPushButton("Добавить альбом")
         self.main_layout.addWidget(button)
@@ -61,7 +57,7 @@ class AddAlbumWindow(QtWidgets.QWidget, Events):
         self.parent_window = parent
         
         self.main_layout = QtWidgets.QFormLayout(self)
-        
+
 
     def input_album_name(self):
         self.input_name = QLineEdit()

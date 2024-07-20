@@ -56,3 +56,11 @@ class Events:
                                                 album_id = {album_id}""")
         return data
 
+
+class EventsSongList:
+    def display_widget_add_song(self):
+        self.hide()
+        self.add_song_widget.show()
+
+    # def close_song_widget(self):
+    #     pass

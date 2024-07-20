@@ -40,6 +40,10 @@ class MusicWidget(QMainWindow):
         self.player.durationChanged.connect(self.duration_changed)
 
 
+
+        
+
+
     def open_music(self):
         pass
 

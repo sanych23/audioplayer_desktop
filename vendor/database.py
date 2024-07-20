@@ -30,11 +30,7 @@ class DataBaseConnector:
         self.__cursor.execute (sql)
 
 
-class Validator:
-    pass
-
-
-class DbORM(DataBaseConnector, Validator):
+class DbORM(DataBaseConnector):
     def __init__(self) -> None:
         super().__init__()
 
@@ -50,4 +46,7 @@ class DbORM(DataBaseConnector, Validator):
         sql += name_row + " VALUES " + value_row
         self.query(sql)
 
-    
+    def get_all_artists(self):
+        sql = "SELECT * FROM public.artist"
+        data = self.querySelect(sql)
+        return data

@@ -1,11 +1,12 @@
-import sys
 from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton, QWidget, QScrollArea, QGridLayout, QHBoxLayout, QLabel,QVBoxLayout
 from PySide6.QtCore import QFile, QSize,QRect
-from Events import Events
+from Events import Events, EventsSongList
 from Widget.MusicWidget import MusicWidget
+from Widget.SongAddWidget import SongAddWidget
 
 
-class SongWidget(QMainWindow, Events):
+class SongWidget(QMainWindow, EventsSongList, Events):
+
     def __init__(self, parent, album_name, album_id):
         super().__init__()
         self.parent_window = parent
@@ -31,11 +32,22 @@ class SongWidget(QMainWindow, Events):
         self.top_layout.addWidget(self.name_album)
         self.layout.addWidget(self.label)      
         self.layout.addWidget(self.scrollArea)
+
+        self.add_song_button()
+
         self.back_button.clicked.connect(self.close_song_widget)
         self.get_song_list(album_id)
 
         self.resize(800, 600)
-    
+
+        self.add_song_widget = SongAddWidget(self).input_song_name().input_artist_menu().load_music().button_close_widget()
+
+
+    def add_song_button(self):
+        button_add_song = QPushButton("Добавить песню")
+        button_add_song.clicked.connect(self.display_widget_add_song)
+        self.layout.addWidget(button_add_song)
+
     def get_song_list(self, album_id):
         data = self.database.querySelect(f"""SELECT 
                                                 album.id AS album_id,
