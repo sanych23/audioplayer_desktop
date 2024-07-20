@@ -50,4 +50,4 @@ class DbORM(DataBaseConnector, Validator):
         sql += name_row + " VALUES " + value_row
         self.query(sql)
 
-
+    

@@ -31,3 +31,4 @@ class Events:
         self.parent_window.album_list.addAlbumButtons()
         self.parent_window.show()
 
+    

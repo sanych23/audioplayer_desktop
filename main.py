@@ -40,7 +40,7 @@ class MainWindow(QtWidgets.QWidget, Events):
         return data  
 
     def widget_add_album(self):
-        self.add_album_wiget = AddAlbumWindow(self)
+        self.add_album_wiget = AddAlbumWindow(self).input_album_name().input_description().input_release().button_add_album().button_close_widget()
         self.add_album_wiget.hide()
         self.add_album_wiget.resize(400, 400)
 
@@ -57,28 +57,31 @@ class AddAlbumWindow(QtWidgets.QWidget, Events):
         
         self.main_layout = QtWidgets.QFormLayout(self)
 
-        self.input_album_name()
-        self.input_description()
-        self.input_release()
-        self.button_add_album()
-        self.button_close_widget()
+        # self.input_album_name()
+        # self.input_description()
+        # self.input_release()
+        # self.button_add_album()
+        # self.button_close_widget()
 
     def input_album_name(self):
         self.input_name = QLineEdit()
         name_label = QLabel("Имя альбома:")
         self.main_layout.addWidget(name_label)
         self.main_layout.addWidget(self.input_name)
+        return self
 
     def button_close_widget(self):
         button = QPushButton("Назад")
         self.main_layout.addWidget(button)
         button.clicked.connect(self.close_add_album)
+        return self
 
     def input_description(self):
         self.input_description = QTextEdit()
         name_label = QLabel("Описание альбома:")
         self.main_layout.addWidget(name_label)
         self.main_layout.addWidget(self.input_description)
+        return self
 
     def input_release(self):
         self.input_release = QLineEdit()
@@ -86,12 +89,14 @@ class AddAlbumWindow(QtWidgets.QWidget, Events):
         self.input_release.setPlaceholderText("ДД.ММ.ГГГГ")
         self.main_layout.addWidget(name_label)
         self.main_layout.addWidget(self.input_release)
+        return self
 
     def button_add_album(self):
         button = QPushButton("Добавить альбом")
         self.main_layout.addWidget(button)
         button.clicked.connect(self.add_album)
-        
+        return self
+
 
 app = QtWidgets.QApplication([])
 
