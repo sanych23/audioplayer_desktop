@@ -1,4 +1,5 @@
 from vendor.database import DbORM
+from Helper.Validator import Validator
 
 class Events:
     database = DbORM()
@@ -16,11 +17,16 @@ class Events:
         description = self.input_description.toPlainText()
         release_date = self.input_release.text()
 
-        self.database.add_album({
+        if Validator.check_album_data({
             "name": name,
             "description": description,
             "release_date": release_date,
-        })
+        }):
+            self.database.add_album({
+                "name": name,
+                "description": description,
+                "release_date": release_date,
+            })
         self.hide()
         self.parent_window.album_list.addAlbumButtons()
         self.parent_window.show()

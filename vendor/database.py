@@ -44,7 +44,7 @@ class DbORM(DataBaseConnector, Validator):
         value_row = "("
         for key in params.keys():
             name_row += key + ","
-            value_row += str(params[key]) + ","
+            value_row += "'" + str(params[key])+ "'" + ","
         name_row = name_row[:-1] + ")"
         value_row = value_row[:-1] + ")"
         sql += name_row + " VALUES " + value_row
