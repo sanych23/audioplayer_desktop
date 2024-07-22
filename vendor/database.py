@@ -49,5 +49,9 @@ class DbORM(DataBaseConnector, Validator):
         value_row = value_row[:-1] + ")"
         sql += name_row + " VALUES " + value_row
         self.query(sql)
+    
+    def delete_song(self, song_id: int):
+        sql = f"DELETE FROM public.song WHERE song.id={song_id}; DELETE FROM public.song_album WHERE song_album.song_id={song_id};"
+        self.query(sql)
 
     

@@ -3,7 +3,7 @@ from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton, QWidget, Q
 from PySide6.QtCore import QFile, QSize,QRect, Slot
 from vendor.database import DataBaseConnector
 from Events import Events
-from Widget.SongWidget import SongWidget
+from Widget.SongListWidget import SongListWidget
 from Widget.MusicWidget import MusicWidget
 
 class AlbumListWidget(QMainWindow, Events):
@@ -58,5 +58,5 @@ class AlbumListWidget(QMainWindow, Events):
     def open_album(self):
         self.album_id = self.sender().album_id
         self.album_name = self.sender().album_name
-        self.song_list = SongWidget(self,self.album_name, self.album_id)
+        self.song_list = SongListWidget(self,self.album_name, self.album_id)
         self.song_list.show()

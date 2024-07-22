@@ -35,13 +35,16 @@ class Events:
         self.parent_window.album_list.addAlbumButtons()
         self.parent_window.show()
 
+    def delete_song(self):
+        self.song_id = self.sender().song_id
+        self.database.delete_song(self.song_id)
 
     def get_song_list(self, album_id):
         data = self.database.querySelect(f"""SELECT 
                                                 album.id AS album_id,
                                                 album.name AS album_name,
                                                 song.id AS song_id,
-                                                song.name AS somg_name
+                                                song.name AS song_name
                                             FROM
                                                 public.album
                                             INNER JOIN
