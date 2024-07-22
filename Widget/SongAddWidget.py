@@ -12,22 +12,19 @@ class SongAddWidget(QtWidgets.QWidget, EventsSongList, Events):
         self.parent_window = parent
         
         self.main_layout = QtWidgets.QFormLayout(self)
-        self.hide()
+        self.show()
 
     def load_music(self):
-        button = QPushButton("Выбрать музыку")
+        button = QPushButton("Выбрать песню")
         self.main_layout.addWidget(button)
         button.clicked.connect(self.get_file_name)
-        # self.loader_music = QFileDialog(self)
-        # self.loader_music.setFileMode(QFileDialog.AnyFile)
-        # self.main_layout.addWidget(self.loader_music)
         return self
 
     def input_artist_menu(self):
         self.input_artist = QComboBox()
         artists = self.database.get_all_artists()
         for artist in artists:
-            self.input_artist.addItem(f"{artist["id"]}. {artist["stage_name"]}")
+            self.input_artist.addItem(f"{artist["stage_name"]}", userData=artist)
         self.main_layout.addWidget(self.input_artist)
         return self
 
@@ -43,26 +40,12 @@ class SongAddWidget(QtWidgets.QWidget, EventsSongList, Events):
         self.main_layout.addWidget(button)
         button.clicked.connect(self.close_add_album)
         return self
+    
+    def button_add_music(self):
+        button = QPushButton("Добавить песню")
+        self.main_layout.addWidget(button)
+        button.clicked.connect(self.add_music)
+        return self
 
-    # def input_description(self):
-    #     self.input_description = QTextEdit()
-    #     name_label = QLabel("Описание альбома:")
-    #     self.main_layout.addWidget(name_label)
-    #     self.main_layout.addWidget(self.input_description)
-    #     return self
-
-    # def input_release(self):
-    #     self.input_release = QLineEdit()
-    #     name_label = QLabel("Релиз альбома:")
-    #     self.input_release.setPlaceholderText("ДД.ММ.ГГГГ")
-    #     self.main_layout.addWidget(name_label)
-    #     self.main_layout.addWidget(self.input_release)
-    #     return self
-
-    # def button_add_album(self):
-    #     button = QPushButton("Добавить альбом")
-    #     self.main_layout.addWidget(button)
-    #     button.clicked.connect(self.add_album)
-    #     return self
 
 

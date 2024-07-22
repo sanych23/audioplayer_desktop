@@ -10,7 +10,8 @@ class SongWidget(QMainWindow, EventsSongList, Events):
     def __init__(self, parent, album_name, album_id):
         super().__init__()
         self.parent_window = parent
-        
+        self.album_id = album_id
+
         self.centralwidget = QWidget()
         self.centralwidget.setObjectName("centralwidget")
         self.setCentralWidget(self.centralwidget)
@@ -40,7 +41,7 @@ class SongWidget(QMainWindow, EventsSongList, Events):
 
         self.resize(800, 600)
 
-        self.add_song_widget = SongAddWidget(self).input_song_name().input_artist_menu().load_music().button_close_widget()
+        # self.add_song_widget = SongAddWidget(self).input_song_name().input_artist_menu().load_music().button_add_music().button_close_widget()
 
 
     def add_song_button(self):
@@ -53,7 +54,8 @@ class SongWidget(QMainWindow, EventsSongList, Events):
                                                 album.id AS album_id,
                                                 album.name AS album_name,
                                                 song.id AS song_id,
-                                                song.name AS somg_name
+                                                song.name AS song_name,
+                                                song.hash_name as hash_name
                                             FROM
                                                 public.album
                                             INNER JOIN

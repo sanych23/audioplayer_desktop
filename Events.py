@@ -4,6 +4,7 @@ from PySide6.QtWidgets import QFileDialog
 from datetime import datetime
 import shutil
 
+
 class Events:
     database = DbORM()
 
@@ -62,38 +63,36 @@ class Events:
 
 class EventsSongList:
     def display_widget_add_song(self):
+        from Widget.SongAddWidget import SongAddWidget
+        self.add_song_widget = SongAddWidget(self).input_song_name().input_artist_menu().load_music().button_add_music().button_close_widget()
         self.hide()
-        self.add_song_widget.show()
 
     def get_file_name(self):
-        file_filter = 'Data File (*.xlsx *.csv *.dat);; Excel File (*.xlsx *.xls);; Image File (*.png *.jpg)'
-        # response = QFileDialog.getOpenFileName(
-        #     parent=self,
-        #     caption='Select a file',
-        #     directory='C:/Users/PC/Desktop/projects/audioplayer_pyside/music',
-        #     filter=file_filter,
-        #     initialFilter='Excel File (*.xlsx *.xls)'
-        # )
-        # self.textbox.setText(str(response))
         worker = QFileDialog(self)
-        # response.setFileMode(QFileDialog.ExistingFile)
-        # print(response)
-        # response.getSaveFileName(self, ("Save File"),()
-        #                    "/home/jana/untitled.png",
-        #                    ("Images (*.png *.xpm *.jpg)"))
-        # self.textbox.setText(str(response))
-        file_name = worker.getOpenFileName()
+        self.file_name = worker.getOpenFileName()
         self.hash_name = hash(datetime.now())
-        # print(file_name)
-        self.music_name = file_name[0].split('/')[-1].split('.')[0]
-        # worker.saveFileContent(
-        #     parent=self,
-        #     caption=file_name[0],
-        # )
+        self.music_name = self.file_name[0].split('/')[-1].split('.')[0]
+        
 
-        shutil.copyfile(file_name[0], f"music/{self.hash_name}.mp3")
+    def add_music(self):
+        data = {
+            "name": self.input_name.text(),
+            "hash_name": self.hash_name
+        }
+        
+        self.database.insert_music(data)
+        id = self.database.get_music_id_on_hash(data["hash_name"])
+        author_id = self.input_artist.currentData()["id"]
 
-        # print(self.music_name)
+        self.database.music_to_artist(id, author_id)
+        self.database.music_to_album(id, self.parent_window.album_id)
+
+
+        shutil.copyfile(self.file_name[0], f"music/{self.hash_name}.mp3")
+        self.parent_window.get_song_list(self.parent_window.album_id)
+        self.parent_window.show()
+        self.close()
+
 
 
     # def close_song_widget(self):

@@ -14,7 +14,7 @@ class MusicWidget(QMainWindow):
         self.muted = True
 
         self.ui = MusicWindow()
-        self.ui.setupUi(self, song_info['somg_name'], song_info['album_name'])
+        self.ui.setupUi(self, song_info['song_name'], song_info['album_name'])
         self.setWindowTitle('Music Player Application')
 
         self.player = QMediaPlayer()
@@ -23,7 +23,7 @@ class MusicWidget(QMainWindow):
         self.player.setAudioOutput(self.audio)
         self.audio.setVolume(self.audioVolumeLevel/100)
         self.song_name = 1
-        self.file_path = f"file/music/{self.song_name}.mp3"
+        self.file_path = f"music/{song_info["hash_name"]}.mp3"
 
         self.player.setSource(QUrl.fromLocalFile(self.file_path))
 

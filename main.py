@@ -5,6 +5,7 @@ from PySide6.QtWidgets import QPushButton, QLineEdit, QLabel, QTextEdit
 from vendor.database import DataBaseConnector
 from Widget.AlbumListWidget import AlbumListWidget
 from Events import Events
+import Lib.Interface.resources
 
 
 class MainWindow(QtWidgets.QWidget, Events):
