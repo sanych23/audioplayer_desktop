@@ -15,8 +15,10 @@ class SongAddWidget(QtWidgets.QWidget, EventsSongList, Events):
         self.hide()
 
     def load_music(self):
-        self.loader_music = QFileDialog(self, "Выбрать музыку")
+        self.loader_music = QFileDialog(self)
+        self.loader_music.setFileMode(QFileDialog.AnyFile)
         self.main_layout.addWidget(self.loader_music)
+        return self
 
     def input_artist_menu(self):
         self.input_artist = QComboBox()
