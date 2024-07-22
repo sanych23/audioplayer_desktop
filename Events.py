@@ -1,5 +1,8 @@
 from vendor.database import DbORM
 from Helper.Validator import Validator
+from PySide6.QtWidgets import QFileDialog
+from datetime import datetime
+import shutil
 
 class Events:
     database = DbORM()
@@ -61,6 +64,37 @@ class EventsSongList:
     def display_widget_add_song(self):
         self.hide()
         self.add_song_widget.show()
+
+    def get_file_name(self):
+        file_filter = 'Data File (*.xlsx *.csv *.dat);; Excel File (*.xlsx *.xls);; Image File (*.png *.jpg)'
+        # response = QFileDialog.getOpenFileName(
+        #     parent=self,
+        #     caption='Select a file',
+        #     directory='C:/Users/PC/Desktop/projects/audioplayer_pyside/music',
+        #     filter=file_filter,
+        #     initialFilter='Excel File (*.xlsx *.xls)'
+        # )
+        # self.textbox.setText(str(response))
+        worker = QFileDialog(self)
+        # response.setFileMode(QFileDialog.ExistingFile)
+        # print(response)
+        # response.getSaveFileName(self, ("Save File"),()
+        #                    "/home/jana/untitled.png",
+        #                    ("Images (*.png *.xpm *.jpg)"))
+        # self.textbox.setText(str(response))
+        file_name = worker.getOpenFileName()
+        self.hash_name = hash(datetime.now())
+        # print(file_name)
+        self.music_name = file_name[0].split('/')[-1].split('.')[0]
+        # worker.saveFileContent(
+        #     parent=self,
+        #     caption=file_name[0],
+        # )
+
+        shutil.copyfile(file_name[0], f"music/{self.hash_name}.mp3")
+
+        # print(self.music_name)
+
 
     # def close_song_widget(self):
     #     pass
