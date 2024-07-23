@@ -4,19 +4,19 @@ from PySide6.QtGui import (QAction,QFont,QIcon)
 from PySide6.QtWidgets import QPushButton, QLineEdit, QLabel, QTextEdit
 from vendor.database import DataBaseConnector
 from Widget.AlbumListWidget import AlbumListWidget
-from Events import Events
+from Widget.SongListWidget import SongListWidget
+from Events import EventsAlbumList
 import Lib.Interface.resources
 
 
-class MainWindow(QtWidgets.QWidget, Events):
+class MainWindow(QtWidgets.QWidget, EventsAlbumList):
     def __init__(self):
         super().__init__()
         
         self.__connect = DataBaseConnector()
-        self.album_list = AlbumListWidget()
+        self.album_list = AlbumListWidget(self)
         self.main_layout = QtWidgets.QVBoxLayout(self)
         self.main_layout.addWidget(self.album_list)
-
         self.button_open_add_album()
         self.widget_add_album()
 
@@ -31,7 +31,7 @@ class MainWindow(QtWidgets.QWidget, Events):
         button.clicked.connect(self.open_add_album)
 
 
-class AddAlbumWindow(QtWidgets.QWidget, Events):
+class AddAlbumWindow(QtWidgets.QWidget, EventsAlbumList):
     def __init__(self, parent):
         super().__init__()
         self.parent_window = parent

@@ -1,54 +1,25 @@
 from vendor.database import DbORM
 from Helper.Validator import Validator
-from PySide6.QtWidgets import QFileDialog
+from PySide6.QtWidgets import QFileDialog,QPushButton
+from PySide6.QtCore import QSize
 from datetime import datetime
 import shutil
 import os
 
 
-
 class Events:
     database = DbORM()
-
-    def open_add_album(self):
-        self.hide()
-        self.add_album_wiget.show()
-
-    def close_add_album(self):
-        self.parent_window.show()
-        self.hide()
-    
     def close_song_widget(self):
         self.parent_window.show()
         self.hide()
         
-
-    def add_album(self):
-        name = self.input_name.text()
-        description = self.input_description.toPlainText()
-        release_date = self.input_release.text()
-
-        if Validator.check_album_data({
-            "name": name,
-            "description": description,
-            "release_date": release_date,
-        }):
-            self.database.add_album({
-                "name": name,
-                "description": description,
-                "release_date": release_date,
-            })
-        self.hide()
-        self.parent_window.album_list.addAlbumButtons()
-        self.parent_window.show()
-
     def delete_song(self):
         self.song_id = self.sender().song_id
         self.database.delete_song(self.song_id)
+        self.player = None
         os.remove(f"music/{self.song_info["hash_name"]}.mp3")
         self.parent_window.close()
         self.parent_window.parent_window.open_album(self.song_info['album_id'], self.song_info['album_name'])
-
 
     def get_song_list(self, album_id):
         data = self.database.querySelect(f"""SELECT 
@@ -71,6 +42,69 @@ class Events:
                                                 album_id = {album_id}""")
         return data
 
+class EventsAlbumList:
+    database = DbORM()
+    def addAlbumButtons(self):
+        row = 0
+        column = 0
+        albums = self.database.querySelect('SELECT id, name FROM public.album ORDER BY id')
+        for album in albums:
+            self.buttons.append(
+                {
+                    'id': album['id'],
+                    'btn': QPushButton(album['name'])
+                }
+            )
+            
+            self.buttons[-1]['btn'].setFixedSize(QSize(170, 80))
+            self.gridLayout.addWidget(self.buttons[-1]['btn'] ,row,column)
+            self.buttons[-1]['btn'].album_id = album["id"]
+            self.buttons[-1]['btn'].album_name = album["name"]
+            column = column + 1
+            if (column == 4):
+                column = 0
+                row = row + 1
+            self.buttons[-1]['btn'].clicked.connect(self.open_album)
+
+
+    def open_album(self, album_id=None, album_name=None):
+        from Widget.SongListWidget import SongListWidget
+        if(not album_id or not album_name):
+            self.album_id = self.sender().album_id
+            self.album_name = self.sender().album_name
+        else:
+            self.album_id = album_id
+            self.album_name = album_name
+        self.song_list = SongListWidget(self, self.album_name, self.album_id)
+        self.song_list.show()
+
+    def open_add_album(self):
+        self.hide()
+        self.add_album_wiget.show()
+
+    def close_add_album(self):
+        self.parent_window.show()
+        self.hide()
+
+    def add_album(self):
+        name = self.input_name.text()
+        description = self.input_description.toPlainText()
+        release_date = self.input_release.text()
+
+        if Validator.check_album_data({
+            "name": name,
+            "description": description,
+            "release_date": release_date,
+        }):
+            self.database.add_album({
+                "name": name,
+                "description": description,
+                "release_date": release_date,
+            })
+        self.hide()
+        self.parent_window.album_list.addAlbumButtons()
+        self.parent_window.show()
+
 
 class EventsSongList:
     def display_widget_add_song(self):
@@ -83,7 +117,6 @@ class EventsSongList:
         self.file_name = self.worker.getOpenFileName()
         self.hash_name = hash(datetime.now())
         self.music_name = self.file_name[0].split('/')[-1].split('.')[0]
-        
         
     
     def add_music(self):
