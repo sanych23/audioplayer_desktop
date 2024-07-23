@@ -55,8 +55,12 @@ class AlbumListWidget(QMainWindow, Events):
             self.buttons[-1]['btn'].clicked.connect(self.open_album)
 
 
-    def open_album(self):
-        self.album_id = self.sender().album_id
-        self.album_name = self.sender().album_name
+    def open_album(self, album_id=None, album_name=None):
+        if(not album_id or not album_name):
+            self.album_id = self.sender().album_id
+            self.album_name = self.sender().album_name
+        else:
+            self.album_id = album_id
+            self.album_name = album_name
         self.song_list = SongListWidget(self,self.album_name, self.album_id)
         self.song_list.show()

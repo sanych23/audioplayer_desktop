@@ -8,6 +8,7 @@ from Events import Events
 import Lib.Interface.resources
 
 
+
 class MainWindow(QtWidgets.QWidget, Events):
     def __init__(self):
         super().__init__()
@@ -20,12 +21,10 @@ class MainWindow(QtWidgets.QWidget, Events):
         self.button_open_add_album()
         self.widget_add_album()
 
-
     def widget_add_album(self):
         self.add_album_wiget = AddAlbumWindow(self).input_album_name().input_description().input_release().button_add_album().button_close_widget()
         self.add_album_wiget.hide()
         self.add_album_wiget.resize(400, 400)
-
 
     def button_open_add_album(self):
         button = QPushButton("Добавить альбом")
@@ -38,7 +37,7 @@ class AddAlbumWindow(QtWidgets.QWidget, Events):
         super().__init__()
         self.parent_window = parent
         self.main_layout = QtWidgets.QFormLayout(self)
-        
+
 
     def input_album_name(self):
         self.input_name = QLineEdit()
