@@ -22,7 +22,8 @@ class MusicWidget(QMainWindow, Events):
         self.player.setAudioOutput(self.audio)
         self.audio.setVolume(self.audioVolumeLevel/100)
         self.file_path = f"music/{self.song_info["hash_name"]}.mp3"
-        # self.ui.toolButtonPlay.clicked.connect(self.play_music)
+        
+        self.ui.toolButtonPlay.clicked.connect(self.play_music)
         self.ui.horizontalSliderVolume.sliderMoved.connect(self.volume_slider_changed)
         self.ui.horizontalSliderVolume.setValue(self.audioVolumeLevel)
         self.ui.horizontalSliderPlay.sliderMoved.connect(self.play_slider_changed)
@@ -74,6 +75,7 @@ class MusicWidget(QMainWindow, Events):
         self.player.pause()
     def stop_btn(self):
         self.player.stop()
+        
 
     def volume_mute(self):
         if(self.muted):
