@@ -4,17 +4,15 @@ from PySide6.QtCore import (QCoreApplication,
 from PySide6.QtGui import (QAction,QFont,QIcon)
 from PySide6.QtWidgets import (QHBoxLayout, QLabel,
     QMenu, QMenuBar, QSizePolicy, QSlider,
-    QSpacerItem, QStatusBar, QToolButton, QVBoxLayout,
+    QSpacerItem, QStatusBar, QToolButton, QPushButton, QVBoxLayout,
     QWidget)
 
-
-
 class MusicWindow(object):
-    def setupUi(self,MainWindow, song_name, artist):
+    def setupUi(self,MainWindow, song_id, song_name, artist):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.resize(600, 150)
-        
+        self.song_id = song_id
         self.actionOpen_Music = QAction(MainWindow)
         self.actionOpen_Music.setObjectName(u"actionOpen_Music")
         self.actionOpen_Playlist = QAction(MainWindow)
@@ -26,6 +24,8 @@ class MusicWindow(object):
         self.description_layout = QHBoxLayout()
         self.song_name = QLabel(song_name) 
         self.artist_list = QLabel(artist)
+        self.delete_btn = QPushButton("Удалить")
+        self.delete_btn.song_id = self.song_id
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.verticalLayout = QVBoxLayout()
         self.verticalLayout.setObjectName(u"verticalLayout")
@@ -39,6 +39,7 @@ class MusicWindow(object):
         self.verticalLayout.addLayout(self.description_layout)
         self.description_layout.addWidget(self.song_name)
         self.description_layout.addWidget(self.artist_list)
+        self.description_layout.addWidget(self.delete_btn)
         self.labelTimer = QLabel(self.centralwidget)
         self.labelTimer.setObjectName(u"labelTimer")
         font = QFont()
@@ -46,7 +47,6 @@ class MusicWindow(object):
         self.labelTimer.setFont(font)
 
         self.horizontalLayout.addWidget(self.labelTimer)
-
 
         self.verticalLayout.addLayout(self.horizontalLayout)
 
@@ -89,38 +89,19 @@ class MusicWindow(object):
         icon3.addFile(u":/icons/volume.png", QSize(), QIcon.Normal, QIcon.Off)
         self.toolButtonVolume.setIcon(icon3)
         self.toolButtonVolume.setIconSize(QSize(24, 24))
-
         self.horizontalLayout_2.addWidget(self.toolButtonVolume)
 
         self.horizontalSliderVolume = QSlider(self.centralwidget)
         self.horizontalSliderVolume.setObjectName(u"horizontalSliderVolume")
         self.horizontalSliderVolume.setOrientation(Qt.Horizontal)
-
         self.horizontalLayout_2.addWidget(self.horizontalSliderVolume)
-
-
         self.verticalLayout.addLayout(self.horizontalLayout_2)
 
 
         self.verticalLayout_2.addLayout(self.verticalLayout)
 
         MainWindow.setCentralWidget(self.centralwidget)
-        # self.menubar = QMenuBar(MainWindow)
-        # self.menubar.setObjectName(u"menubar")
-        # self.menubar.setGeometry(QRect(0, 0, 600, 22))
-        # self.menuFile = QMenu(self.menubar)
-        # self.menuFile.setObjectName(u"menuFile")
-        # MainWindow.setMenuBar(self.menubar)
-        # self.statusbar = QStatusBar(MainWindow)
-        # self.statusbar.setObjectName(u"statusbar")
-        # MainWindow.setStatusBar(self.statusbar)
-
-        # self.menubar.addAction(self.menuFile.menuAction())
-        # self.menuFile.addAction(self.actionOpen_Music)
-        # self.menuFile.addAction(self.actionOpen_Playlist)
-
         self.retranslateUi(MainWindow)
-
         QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -132,4 +113,3 @@ class MusicWindow(object):
         self.toolButtonPause.setText(QCoreApplication.translate("MainWindow", u"...", None))
         self.toolButtonStop.setText(QCoreApplication.translate("MainWindow", u"...", None))
         self.toolButtonVolume.setText(QCoreApplication.translate("MainWindow", u"...", None))
-        # self.menuFile.setTitle(QCoreApplication.translate("MainWindow", u"File", None))
