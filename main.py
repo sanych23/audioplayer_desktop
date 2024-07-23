@@ -8,7 +8,6 @@ from Events import Events
 import Lib.Interface.resources
 
 
-
 class MainWindow(QtWidgets.QWidget, Events):
     def __init__(self):
         super().__init__()
