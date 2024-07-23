@@ -4,16 +4,17 @@ from PySide6.QtGui import (QAction,QFont,QIcon)
 from Lib.Interface.MusicWindow import MusicWindow
 from PySide6.QtMultimedia import QMediaPlayer, QAudioOutput
 from PySide6.QtCore import QUrl, QTime, QSize
-from Events import Events
+from Events import Events, EventMusicWidget
 import os
 
-class MusicWidget(QMainWindow, Events):
+class MusicWidget(QMainWindow, Events, EventMusicWidget):
     def __init__(self, parent, song_info):
         super().__init__()
         self.parent_window = parent
         self.muted = True
         self.ui = MusicWindow()
-        self.ui.setupUi(self, song_info['song_id'], song_info['song_name'], song_info['album_name'])
+        self.artist = self.get_artist_list(song_info['song_id'])
+        self.ui.setupUi(self, song_info['song_id'], song_info['song_name'], self.artist)
         self.setWindowTitle('Music Player Application')
         self.song_info = song_info
         self.player = QMediaPlayer()
@@ -22,7 +23,6 @@ class MusicWidget(QMainWindow, Events):
         self.player.setAudioOutput(self.audio)
         self.audio.setVolume(self.audioVolumeLevel/100)
         self.file_path = f"music/{self.song_info["hash_name"]}.mp3"
-        
         self.ui.toolButtonPlay.clicked.connect(self.play_music)
         self.ui.horizontalSliderVolume.sliderMoved.connect(self.volume_slider_changed)
         self.ui.horizontalSliderVolume.setValue(self.audioVolumeLevel)

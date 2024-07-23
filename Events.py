@@ -139,7 +139,26 @@ class EventsSongList:
         self.parent_window.show()
         self.close()
 
-
+class EventMusicWidget:
+    database = DbORM()
+    def get_artist_list(self, song_id):
+        artists = self.database.querySelect(f"""SELECT
+                                                    song_artist.song_id AS song_id,
+                                                    artist.stage_name AS artist_name
+                                                FROM
+                                                    public.song_artist
+                                                INNER JOIN
+                                                    public.artist
+                                                ON
+                                                     song_artist.artist_id = artist.id
+                                                WHERE
+                                                    song_artist.song_id = {song_id}""")
+        
+        if(len(artists) == 1):
+            artist = artists[0]['artist_name']
+            return artist
+        artists_list = ", ".join([item['artist_name'] for item in artists])
+        return artists_list
 
     # def close_song_widget(self):
     #     pass

@@ -22,7 +22,7 @@ class MusicWindow(object):
         self.centralwidget.setObjectName(u"centralwidget")
         self.verticalLayout_2 = QVBoxLayout(self.centralwidget)
         self.description_layout = QHBoxLayout()
-        self.song_name = QLabel(song_name) 
+        self.song_name = QLabel(song_name)
         self.artist_list = QLabel(artist)
         self.delete_btn = QPushButton("Удалить")
         self.delete_btn.song_id = self.song_id
