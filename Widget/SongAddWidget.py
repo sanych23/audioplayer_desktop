@@ -3,7 +3,6 @@ from PySide6 import QtCore, QtWidgets
 from vendor.database import DbORM
 from PySide6.QtWidgets import QPushButton, QLineEdit, QLabel, QFileDialog, QComboBox, QCheckBox
 
-
 class SongAddWidget(QtWidgets.QWidget, EventsSongList, Events):
     database = DbORM()
 
@@ -13,6 +12,7 @@ class SongAddWidget(QtWidgets.QWidget, EventsSongList, Events):
         
         self.main_layout = QtWidgets.QFormLayout(self)
         self.show()
+        
 
     def load_music(self):
         button = QPushButton("Выбрать песню")
@@ -42,7 +42,7 @@ class SongAddWidget(QtWidgets.QWidget, EventsSongList, Events):
     def button_close_widget(self):
         button = QPushButton("Назад")
         self.main_layout.addWidget(button)
-        button.clicked.connect(self.close_add_album)
+        button.clicked.connect(self.close_add_music)
         return self
     
     def button_add_music(self):

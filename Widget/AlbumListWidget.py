@@ -1,14 +1,14 @@
 import sys
 from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton, QWidget, QScrollArea, QGridLayout, QHBoxLayout, QLabel,QVBoxLayout
 from PySide6.QtCore import QFile, QSize,QRect, Slot
+from Events import EventsAlbumList
 from vendor.database import DataBaseConnector
-from Events import Events
-from Widget.SongWidget import SongWidget
-from Widget.MusicWidget import MusicWidget
+from Widget.SongListWidget import SongListWidget
 
-class AlbumListWidget(QMainWindow, Events):
-    def __init__(self):
+class AlbumListWidget(QMainWindow, EventsAlbumList):
+    def __init__(self, parent):
         super().__init__()
+        self.parent_window = parent
         self.centralwidget = QWidget()
         self.centralwidget.setObjectName("centralwidget")
         self.setCentralWidget(self.centralwidget)
@@ -27,7 +27,7 @@ class AlbumListWidget(QMainWindow, Events):
         self.layout = QVBoxLayout(self.centralwidget)   
         self.layout.addWidget(self.label)      
         self.layout.addWidget(self.scrollArea)
-        
+
         self.addAlbumButtons()
         
         
@@ -58,5 +58,7 @@ class AlbumListWidget(QMainWindow, Events):
     def open_album(self):
         self.album_id = self.sender().album_id
         self.album_name = self.sender().album_name
-        self.song_list = SongWidget(self, self.album_name, self.album_id)
+        self.song_list = SongListWidget(self, self.album_name, self.album_id)
         self.song_list.show()
+
+    

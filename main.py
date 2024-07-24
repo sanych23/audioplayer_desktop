@@ -4,41 +4,21 @@ from PySide6.QtGui import (QAction,QFont,QIcon)
 from PySide6.QtWidgets import QPushButton, QLineEdit, QLabel, QTextEdit
 from vendor.database import DataBaseConnector
 from Widget.AlbumListWidget import AlbumListWidget
-from Events import Events
+from Widget.SongListWidget import SongListWidget
+from Events import EventsAlbumList
 import Lib.Interface.resources
 
 
-class MainWindow(QtWidgets.QWidget, Events):
+class MainWindow(QtWidgets.QWidget, EventsAlbumList):
     def __init__(self):
         super().__init__()
         
         self.__connect = DataBaseConnector()
-        self.album_list = AlbumListWidget()
+        self.album_list = AlbumListWidget(self)
         self.main_layout = QtWidgets.QVBoxLayout(self)
         self.main_layout.addWidget(self.album_list)
-
         self.button_open_add_album()
         self.widget_add_album()
-
-    def generateAlbumSong(self, album_id):
-        data = self.__connect.querySelect(f"""SELECT 
-                                                album.id AS album_id,
-                                                album.name AS album_name,
-                                                song.id AS song_id,
-                                                song.name AS somg_name
-                                            FROM
-                                                public.album
-                                            INNER JOIN
-                                                public.song_album
-                                            ON
-                                                album.id = song_album.album_id
-                                            INNER JOIN
-                                                public.song
-                                            ON
-                                                song_album.song_id = song.id
-                                            WHERE 
-                                                album_id ={album_id}""")
-        return data  
 
     def widget_add_album(self):
         self.add_album_wiget = AddAlbumWindow(self).input_album_name().input_description().input_release().button_add_album().button_close_widget()
@@ -51,12 +31,10 @@ class MainWindow(QtWidgets.QWidget, Events):
         button.clicked.connect(self.open_add_album)
 
 
-
-class AddAlbumWindow(QtWidgets.QWidget, Events):
+class AddAlbumWindow(QtWidgets.QWidget, EventsAlbumList):
     def __init__(self, parent):
         super().__init__()
         self.parent_window = parent
-        
         self.main_layout = QtWidgets.QFormLayout(self)
 
 
