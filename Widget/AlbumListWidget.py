@@ -58,5 +58,5 @@ class AlbumListWidget(QMainWindow, Events):
     def open_album(self):
         self.album_id = self.sender().album_id
         self.album_name = self.sender().album_name
-        self.song_list = SongWidget(self,self.album_name, self.album_id)
+        self.song_list = SongWidget(self, self.album_name, self.album_id)
         self.song_list.show()

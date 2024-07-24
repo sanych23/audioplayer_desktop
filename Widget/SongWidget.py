@@ -6,6 +6,7 @@ from Widget.SongAddWidget import SongAddWidget
 
 
 class SongWidget(QMainWindow, EventsSongList, Events):
+    # music_widgets: list = []
 
     def __init__(self, parent, album_name, album_id):
         super().__init__()
@@ -23,13 +24,14 @@ class SongWidget(QMainWindow, EventsSongList, Events):
         self.label = QLabel("Список песен")
         self.name_album = QLabel(album_name)
         self.scrollAreaWidgetContents = QWidget()
-        self.gridLayout = QVBoxLayout(self.scrollAreaWidgetContents)
+        
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
-        self.gridLayout.setGeometry(QRect(0, 0, 500, 495))   
+          
         self.layout = QVBoxLayout(self.centralwidget)
         self.layout.addLayout(self.top_layout)
         self.top_layout.addWidget(self.back_button)
-       
+        self.gridLayout = QVBoxLayout(self.scrollAreaWidgetContents)
+        self.gridLayout.setGeometry(QRect(0, 0, 500, 495))
         self.top_layout.addWidget(self.name_album)
         self.layout.addWidget(self.label)      
         self.layout.addWidget(self.scrollArea)
@@ -50,12 +52,14 @@ class SongWidget(QMainWindow, EventsSongList, Events):
         self.layout.addWidget(button_add_song)
 
     def get_song_list(self, album_id):
+        # self.gridLayout = QVBoxLayout(self.scrollAreaWidgetContents)
+        # self.gridLayout.setGeometry(QRect(0, 0, 500, 495)) 
         data = self.database.querySelect(f"""SELECT 
                                                 album.id AS album_id,
                                                 album.name AS album_name,
                                                 song.id AS song_id,
                                                 song.name AS song_name,
-                                                song.hash_name as hash_name
+                                                song.hash_name AS hash_name
                                             FROM
                                                 public.album
                                             INNER JOIN
@@ -77,8 +81,14 @@ class SongWidget(QMainWindow, EventsSongList, Events):
                 self.song_item_widget = MusicWidget(item)
                 self.song_item_widget.setFixedHeight(100)
                 self.gridLayout.addWidget(self.song_item_widget)
+                # self.music_widgets.append(self.song_item_widget)
                 self.gridLayout.addStretch()
-                
+        
+    def rerender_music_list(self):
+        self.gridLayout = None
+        self.gridLayout = QVBoxLayout(self.scrollAreaWidgetContents)
+        self.gridLayout.setGeometry(QRect(0, 0, 500, 495))
+        self.get_song_list(self.album_id)
 
 
 

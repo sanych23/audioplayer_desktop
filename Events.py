@@ -65,6 +65,7 @@ class EventsSongList:
     def display_widget_add_song(self):
         from Widget.SongAddWidget import SongAddWidget
         self.add_song_widget = SongAddWidget(self).input_song_name().input_artist_menu().load_music().button_add_music().button_close_widget()
+        self.add_song_widget.resize(350, 250)
         self.hide()
 
     def get_file_name(self):
@@ -89,7 +90,8 @@ class EventsSongList:
 
 
         shutil.copyfile(self.file_name[0], f"music/{self.hash_name}.mp3")
-        self.parent_window.get_song_list(self.parent_window.album_id)
+        self.parent_window.rerender_music_list()
+        # self.parent_window.parent_window.open_album()
         self.parent_window.show()
         self.close()
 

@@ -1,7 +1,7 @@
 from Events import EventsSongList, Events
 from PySide6 import QtCore, QtWidgets
 from vendor.database import DbORM
-from PySide6.QtWidgets import QPushButton, QLineEdit, QLabel, QFileDialog, QComboBox
+from PySide6.QtWidgets import QPushButton, QLineEdit, QLabel, QFileDialog, QComboBox, QCheckBox
 
 
 class SongAddWidget(QtWidgets.QWidget, EventsSongList, Events):
@@ -22,9 +22,13 @@ class SongAddWidget(QtWidgets.QWidget, EventsSongList, Events):
 
     def input_artist_menu(self):
         self.input_artist = QComboBox()
+        # self.input_artist.activated()
+        
+        name_label = QLabel("Выберите исполнителя:")
         artists = self.database.get_all_artists()
         for artist in artists:
             self.input_artist.addItem(f"{artist["stage_name"]}", userData=artist)
+        self.main_layout.addWidget(name_label)
         self.main_layout.addWidget(self.input_artist)
         return self
 
