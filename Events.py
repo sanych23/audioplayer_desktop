@@ -11,22 +11,39 @@ import os
 class Events:
     database = DbORM()
     def close_song_widget(self):
+        self.parent_window.parent_window.show()
+        # for widget in self.music_widgets:
+        #     if widget:
+        #         widget.player.stop()
+        if self.playing_music:
+            self.playing_music.stop_btn()
         self.parent_window.show()
-        self.hide()
+        self.destroy()
         
     def delete_song(self):
         self.song_id = self.sender().song_id
         self.database.delete_song(self.song_id)
+        if self.parent_window.playing_music:
+            self.parent_window.playing_music.player.stop()
+        self.parent_window.playing_music = None
         self.player = None
-        os.remove(f"music/{self.song_info["hash_name"]}.mp3")
-        # self.parent_window.parent_window.open_album(self.song_info['album_id'], self.song_info['album_name'])
-        # from Widget.SongListWidget import SongListWidget
-        # self.parent_window = SongListWidget(self.parent_window.parent_window, self.parent_window.album_name, self.parent_window.album_id)
-        # self.repaint()
-        album_id = self.parent_window.album_id
-        album_name = self.parent_window.album_name
-        self.parent_window.parent_window.rerender_song_list(album_id, album_name)
-        self.close()
+        print("Stop playing music!")
+        hash = self.song_info["hash_name"]
+        self.parent_window.close()
+        self.parent_window.parent_window.open_album(self.song_info['album_id'], self.song_info['album_name'])
+        # self.song_id = self.sender().song_id
+        # # self.stop_btn()
+        # self.database.delete_song(self.song_id)
+        # self.player = None
+        # os.remove(f"music/{self.song_info["hash_name"]}.mp3")
+        # # album_id = self.parent_window.album_id
+        # # album_name = self.parent_window.album_name
+        # # self.parent_window.destroy()
+        # # self.parent_window.parent_window.rerender_song_list()
+        self.parent_window.destroy()
+        self.destroy()
+        os.remove(f"music/{hash}.mp3")
+        
 
 
     def get_song_list(self, album_id):
@@ -73,23 +90,25 @@ class EventsAlbumList:
                 column = 0
                 row = row + 1
             self.buttons[-1]['btn'].clicked.connect(self.open_album)
-
-    def rerender_song_list(self, album_id, album_name):
-        # main_widget = self.parent_window.parent_window
+        
+    def open_album(self, album_id=None, album_name=None):
         from Widget.SongListWidget import SongListWidget
-        self.song_list = SongListWidget(self, album_name, album_id)
-        self.close()
+        if(not album_id or not album_name):
+            self.album_id = self.sender().album_id
+            self.album_name = self.sender().album_name
+        else:
+            self.album_id = album_id
+            self.album_name = album_name
+        self.song_list = SongListWidget(self, self.album_name, self.album_id)
+        self.song_list.show()
 
-    # def open_album(self, album_id=None, album_name=None):
+
+    # def rerender_song_list(self, album_id, album_name):
     #     from Widget.SongListWidget import SongListWidget
-    #     if(not album_id or not album_name):
-    #         self.album_id = self.sender().album_id
-    #         self.album_name = self.sender().album_name
-    #     else:
-    #         self.album_id = album_id
-    #         self.album_name = album_name
-    #     self.song_list = SongListWidget(self, self.album_name, self.album_id)
+    #     self.song_list = SongListWidget(self, album_name, album_id)
     #     self.song_list.show()
+    #     self.close()
+
 
     def open_add_album(self):
         self.hide()
@@ -133,12 +152,12 @@ class EventsSongList:
         self.hash_name = hash(datetime.now())
         self.music_name = self.file_name[0].split('/')[-1].split('.')[0]
 
-    def rerender(self):
-        album_id = self.parent_window.album_id
-        album_name = self.parent_window.album_name
-        self.parent_window.parent_window.rerender_song_list(album_id, album_name)
-        self.close()
-        self.parent_window.close()
+    # def rerender(self):
+    #     album_id = self.parent_window.album_id
+    #     album_name = self.parent_window.album_name
+    #     self.parent_window.parent_window.rerender_song_list(album_id, album_name)
+    #     self.close()
+    #     self.parent_window.close()
     
     def add_music(self):
         data = {
@@ -157,9 +176,9 @@ class EventsSongList:
         shutil.copyfile(self.file_name[0], f"music/{self.hash_name}.mp3")
         self.parent_window.get_song_list(self.parent_window.album_id)
         self.file_name = self.worker.close()
-        self.rerender()
-        self.parent_window.show()
-        self.close()
+        self.parent_window.parent_window.rerender_song_list()
+        # self.parent_window.show()
+        self.destroy()
 
     def close_add_music(self):
         self.hide()
@@ -185,6 +204,3 @@ class EventMusicWidget:
             return artist
         artists_list = ", ".join([item['artist_name'] for item in artists])
         return artists_list
-
-    # def close_song_widget(self):
-    #     pass
