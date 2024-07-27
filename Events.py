@@ -116,8 +116,14 @@ class EventsAlbumList:
 
 
 class EventsAddArtist:
-    pass
-
+    def new_artist(self):
+        artist_name = self.input_name.text()
+        if artist_name:
+            self.database.add_new_artist(artist_name)
+        self.parent_window.show()
+        self.parent_window.main_layout.replaceWidget(self.parent_window.input_artist, self.parent_window.input_artist_menu(True))
+        self.input_name.setText("")
+        self.hide()
 
 class EventsSongList:
     def display_widget_add_song(self):
@@ -130,11 +136,7 @@ class EventsSongList:
 
     def add_artist(self):
         self.hide()
-        from Widget.AddArtistWidget import AddArtistWidget
-        widget_add_artist = AddArtistWidget().input_stage_name().btn_add_artist()
-        widget_add_artist.show()
-        widget_add_artist.resize(350, 250)
-        
+        self.add_artist_widget.show()
 
     def get_file_name(self):
         self.worker = QFileDialog(self)

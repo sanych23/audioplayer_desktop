@@ -44,6 +44,10 @@ class DbORM(DataBaseConnector):
         value_row = value_row[:-1] + ")"
         sql += name_row + " VALUES " + value_row
         self.query(sql)
+
+    def add_new_artist(self, name):
+        sql = f"INSERT INTO public.artist (stage_name) VALUES ('{name}')"
+        self.query(sql)
     
     def delete_song(self, song_id: int):
         sql = f"DELETE FROM public.song WHERE song.id={song_id}; DELETE FROM public.song_album WHERE song_album.song_id={song_id};"
