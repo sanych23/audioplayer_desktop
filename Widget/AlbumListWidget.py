@@ -54,14 +54,6 @@ class AlbumListWidget(QMainWindow, EventsAlbumList):
                 row = row + 1
             self.buttons[-1]['btn'].clicked.connect(self.open_album)
 
-
-    # def open_album(self):
-    #     self.album_id = self.sender().album_id
-    #     self.album_name = self.sender().album_name
-    #     self.song_list = SongListWidget(self, self.album_name, self.album_id)
-    #     self.parent_window.hide()
-    #     self.song_list.show()
-
     def rerender_song_list(self):
         self.song_list.destroy()
         self.song_list = SongListWidget(self, self.album_name, self.album_id)

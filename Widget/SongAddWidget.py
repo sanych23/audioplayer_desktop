@@ -22,14 +22,18 @@ class SongAddWidget(QtWidgets.QWidget, EventsSongList, Events):
 
     def input_artist_menu(self):
         self.input_artist = QComboBox()
-        # self.input_artist.activated()
-        
         name_label = QLabel("Выберите исполнителя:")
         artists = self.database.get_all_artists()
         for artist in artists:
             self.input_artist.addItem(f"{artist["stage_name"]}", userData=artist)
         self.main_layout.addWidget(name_label)
         self.main_layout.addWidget(self.input_artist)
+        return self
+
+    def add_new_artist(self):
+        button = QPushButton("Добавить нового артиста")
+        self.main_layout.addWidget(button)
+        # button.clicked.connect(self.add_artist)
         return self
 
     def input_song_name(self):

@@ -1,6 +1,5 @@
 from config import HOST, PASSWORD, USER, DB_NAME
 import psycopg2
-from datetime import datetime
 import psycopg2.extras
 
 

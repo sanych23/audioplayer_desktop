@@ -1,9 +1,9 @@
 from vendor.database import DbORM
 from Helper.Validator import Validator
 from PySide6.QtWidgets import QFileDialog,QPushButton
-from PySide6.QtCore import QSize
+from PySide6.QtCore import QSize, QUrl
+import hashlib
 from datetime import datetime
-
 import shutil
 import os
 
@@ -12,38 +12,23 @@ class Events:
     database = DbORM()
     def close_song_widget(self):
         self.parent_window.parent_window.show()
-        # for widget in self.music_widgets:
-        #     if widget:
-        #         widget.player.stop()
         if self.playing_music:
             self.playing_music.stop_btn()
         self.parent_window.show()
         self.destroy()
         
     def delete_song(self):
-        self.song_id = self.sender().song_id
-        self.database.delete_song(self.song_id)
-        if self.parent_window.playing_music:
-            self.parent_window.playing_music.player.stop()
-        self.parent_window.playing_music = None
-        self.player = None
-        print("Stop playing music!")
-        hash = self.song_info["hash_name"]
-        self.parent_window.close()
+        self.song_id = self.sender().song_id 
+        self.database.delete_song(self.song_id) 
+        for item in self.parent_window.music_widgets: 
+            print(item.player) 
+            item.player = None 
+        print("Stop playing music!") 
+        hash_name = str(self.song_info["hash_name"])
+        self.parent_window.destroy() 
+        self.destroy() 
+        os.remove(f"music/{hash_name}.mp3")
         self.parent_window.parent_window.open_album(self.song_info['album_id'], self.song_info['album_name'])
-        # self.song_id = self.sender().song_id
-        # # self.stop_btn()
-        # self.database.delete_song(self.song_id)
-        # self.player = None
-        # os.remove(f"music/{self.song_info["hash_name"]}.mp3")
-        # # album_id = self.parent_window.album_id
-        # # album_name = self.parent_window.album_name
-        # # self.parent_window.destroy()
-        # # self.parent_window.parent_window.rerender_song_list()
-        self.parent_window.destroy()
-        self.destroy()
-        os.remove(f"music/{hash}.mp3")
-        
 
 
     def get_song_list(self, album_id):
@@ -102,14 +87,6 @@ class EventsAlbumList:
         self.song_list = SongListWidget(self, self.album_name, self.album_id)
         self.song_list.show()
 
-
-    # def rerender_song_list(self, album_id, album_name):
-    #     from Widget.SongListWidget import SongListWidget
-    #     self.song_list = SongListWidget(self, album_name, album_id)
-    #     self.song_list.show()
-    #     self.close()
-
-
     def open_add_album(self):
         self.hide()
         self.add_album_wiget.show()
@@ -138,26 +115,32 @@ class EventsAlbumList:
         self.parent_window.show()
 
 
+class EventsAddArtist:
+    pass
+
+
 class EventsSongList:
     def display_widget_add_song(self):
+        if self.playing_music:
+            self.playing_music.player.stop()
         from Widget.SongAddWidget import SongAddWidget
-        self.add_song_widget = SongAddWidget(self).input_song_name().input_artist_menu().load_music().button_add_music().button_close_widget()
+        self.add_song_widget = SongAddWidget(self).input_song_name().input_artist_menu().add_new_artist().load_music().button_add_music().button_close_widget()
         self.add_song_widget.resize(350, 250)
         self.close()
 
+    def add_artist(self):
+        self.hide()
+        from Widget.AddArtistWidget import AddArtistWidget
+        widget_add_artist = AddArtistWidget().input_stage_name().btn_add_artist()
+        widget_add_artist.show()
+        widget_add_artist.resize(350, 250)
+        
 
     def get_file_name(self):
         self.worker = QFileDialog(self)
         self.file_name = self.worker.getOpenFileName()
-        self.hash_name = hash(datetime.now())
+        self.hash_name = hashlib.md5(repr(datetime.now()).encode()).hexdigest()
         self.music_name = self.file_name[0].split('/')[-1].split('.')[0]
-
-    # def rerender(self):
-    #     album_id = self.parent_window.album_id
-    #     album_name = self.parent_window.album_name
-    #     self.parent_window.parent_window.rerender_song_list(album_id, album_name)
-    #     self.close()
-    #     self.parent_window.close()
     
     def add_music(self):
         data = {
@@ -177,7 +160,6 @@ class EventsSongList:
         self.parent_window.get_song_list(self.parent_window.album_id)
         self.file_name = self.worker.close()
         self.parent_window.parent_window.rerender_song_list()
-        # self.parent_window.show()
         self.destroy()
 
     def close_add_music(self):

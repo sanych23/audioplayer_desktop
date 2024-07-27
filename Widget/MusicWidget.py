@@ -43,8 +43,6 @@ class MusicWidget(QMainWindow, Events, EventMusicWidget):
         print('Called play music')
         if self.parent_window.playing_music:
             self.parent_window.playing_music.stop_btn()
-        # for widget in self.parent_window.music_widgets:
-        #     widget.pause_btn()
         if self.player.mediaStatus == QMediaPlayer.PlaybackState.PlayingState:
             self.player.pause()
         else:
@@ -83,7 +81,6 @@ class MusicWidget(QMainWindow, Events, EventMusicWidget):
         self.ui.toolButtonPlay.show()
         if self.parent_window.playing_music == self:
             self.parent_window.playing_music = None
-        # self.ui.toolButtonPause.hide()
 
     def stop_btn(self):
         self.player.stop()
@@ -104,3 +101,4 @@ class MusicWidget(QMainWindow, Events, EventMusicWidget):
             self.ui.horizontalSliderVolume.setValue(self.audioVolumeLevel)
             self.ui.toolButtonVolume.setIcon(QIcon(":/icons/volume.png"))
             self.muted = True
+            

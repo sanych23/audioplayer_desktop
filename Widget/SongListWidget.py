@@ -70,5 +70,3 @@ class SongListWidget(QMainWindow, Events, EventsSongList):
             self.none_label = QLabel("Альбом пуст, добавте песни")
             self.gridLayout.addWidget(self.none_label)
 
-    # def rerender_list_music(self):
-
