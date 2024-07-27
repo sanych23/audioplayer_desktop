@@ -23,4 +23,3 @@ class AddArtistWidget(EventsAddArtist):
         self.main_layout.addWidget(button)
         button.clicked.connect(self.add_artist)
         return self
-
