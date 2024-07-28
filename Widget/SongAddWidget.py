@@ -60,4 +60,3 @@ class SongAddWidget(QtWidgets.QWidget, EventsSongList, Events):
         return self
 
 
-
