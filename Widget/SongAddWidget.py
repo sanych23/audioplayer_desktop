@@ -69,9 +69,9 @@ class SongAddWidget(QtWidgets.QWidget, EventsSongList, Events):
         
 
     def load_music(self):
-        button = QPushButton("Выбрать песню")
-        self.main_layout.addWidget(button)
-        button.clicked.connect(self.get_file_name)
+        self.button_music = QPushButton("Выбрать песню")
+        self.main_layout.addWidget(self.button_music)
+        self.button_music.clicked.connect(self.get_file_name)
         return self
 
     def input_artist_menu(self, params=False):
@@ -104,9 +104,10 @@ class SongAddWidget(QtWidgets.QWidget, EventsSongList, Events):
         return self
     
     def button_add_music(self):
-        button = QPushButton("Добавить песню")
-        self.main_layout.addWidget(button)
-        button.clicked.connect(self.add_music)
+        self.button_add = QPushButton("Добавить песню")
+        self.main_layout.addWidget(self.button_add)
+        self.button_add.clicked.connect(self.add_music)
+        self.button_add.hide()
         return self
 
 

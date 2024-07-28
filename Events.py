@@ -143,6 +143,8 @@ class EventsSongList:
         self.file_name = self.worker.getOpenFileName()
         self.hash_name = hashlib.md5(repr(datetime.now()).encode()).hexdigest()
         self.music_name = self.file_name[0].split('/')[-1].split('.')[0]
+        self.button_music.hide()
+        self.button_add.show()
     
     def add_music(self):
         data = {
