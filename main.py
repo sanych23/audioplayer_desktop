@@ -17,18 +17,18 @@ class MainWindow(QtWidgets.QWidget, EventsAlbumList):
         self.album_list = AlbumListWidget(self)
         self.main_layout = QtWidgets.QVBoxLayout(self)
         self.main_layout.addWidget(self.album_list)
-        self.button_open_add_album()
-        self.widget_add_album()
 
     def widget_add_album(self):
         self.add_album_wiget = AddAlbumWindow(self).input_album_name().input_description().input_release().button_add_album().button_close_widget()
         self.add_album_wiget.hide()
         self.add_album_wiget.resize(400, 400)
+        return self
 
     def button_open_add_album(self):
         button = QPushButton("Добавить альбом")
         self.main_layout.addWidget(button)
         button.clicked.connect(self.open_add_album)
+        return self
 
 
 class AddAlbumWindow(QtWidgets.QWidget, EventsAlbumList):
@@ -75,7 +75,7 @@ class AddAlbumWindow(QtWidgets.QWidget, EventsAlbumList):
 
 app = QtWidgets.QApplication([])
 
-widget = MainWindow()
+widget = MainWindow().widget_add_album().button_open_add_album()
 widget.resize(1000, 600)
 widget.show()
 
