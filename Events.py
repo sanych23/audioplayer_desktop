@@ -152,9 +152,11 @@ class EventsSongList:
         
         self.database.insert_music(data)
         id = self.database.get_music_id_on_hash(data["hash_name"])
-        author_id = self.input_artist.currentData()["id"]
 
-        self.database.music_to_artist(id, author_id)
+        check_artists = self.input_artist.export_check_data()
+        if check_artists:
+            for artist in check_artists:
+                self.database.music_to_artist(id, artist["id"])
         self.database.music_to_album(id, self.parent_window.album_id)
 
 
