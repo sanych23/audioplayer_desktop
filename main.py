@@ -80,3 +80,4 @@ widget.resize(1000, 600)
 widget.show()
 
 sys.exit(app.exec())
+
