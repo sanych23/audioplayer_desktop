@@ -74,9 +74,7 @@ class AddAlbumWindow(QtWidgets.QWidget, EventsAlbumList):
 
 
 app = QtWidgets.QApplication([])
-
 widget = MainWindow().widget_add_album().button_open_add_album()
 widget.resize(1000, 600)
 widget.show()
-
 sys.exit(app.exec())
